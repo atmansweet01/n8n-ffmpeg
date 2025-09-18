@@ -4,3 +4,6 @@ USER root
 RUN apk add --no-cache ffmpeg python3 py3-pip yt-dlp
 
 USER node
+
+ENTRYPOINT ["tini", "--"]
+CMD ["n8n"]
