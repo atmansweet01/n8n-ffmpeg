@@ -1,16 +1,15 @@
-ARG N8N_VERSION=latest
-FROM n8nio/n8n:${N8N_VERSION}
+# Use n8n official image as base
+FROM n8nio/n8n:latest
 
+# Install ffmpeg and yt-dlp
 USER root
+RUN apt-get update && \
+    apt-get install -y ffmpeg python3 python3-pip && \
+    pip3 install --no-cache-dir -U yt-dlp && \
+    rm -rf /var/lib/apt/lists/*
 
-# 安裝 ffmpeg 和相關依賴
-RUN apk add --no-cache \
-    ffmpeg \
-    ffmpeg-dev \
-    && rm -rf /var/cache/apk/*
-
-# 切換回原本的使用者
+# Switch back to n8n user
 USER node
 
-# 驗證 ffmpeg 安裝
-RUN ffmpeg -version
+# Start n8n
+CMD ["n8n"]
